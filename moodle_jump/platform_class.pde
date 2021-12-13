@@ -140,3 +140,16 @@ class Broken_Platform extends Platform {
     broken = true;
   } 
 }
+
+class Bouncy_Platform extends Platform{
+ 
+  Bouncy_Platform(float x, float y, String spower){
+    super( x, y, spower );
+    platformImage = loadImage( "platforma_odskocna.png" );
+  }
+  public void update(){
+    
+    if(visited != false)
+      platformImage = loadImage( "platforma_odskocna2.png" );
+  }
+}

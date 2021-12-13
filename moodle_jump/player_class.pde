@@ -119,7 +119,7 @@ class Player {
         this.climb = (300 - this.y);
         this.y = 300;
         
-        //spustanje platfromi
+        //spustanje platformi
         for (int i=0; i<platforms.size(); i++) {
           platforms.get(i).y_pos += this.climb;
         }
@@ -153,35 +153,34 @@ class Player {
       //prvo provjeravamo platforme koje se ne lome
       for ( Platform platform : platforms ) {
         
-        if (( ( y >= platform.y_pos-110 ) && ( y <= platform.y_pos-90 ) &&
-              ( x >= platform.x_pos-90 ) && ( x <= platform.x_pos+60))) {  
+        if (( ( y >= platform.get_y()-110 ) && ( y <= platform.get_y()-90 ) &&
+              ( x >= platform.get_x()-200 ) && ( x <= platform.get_x()+60))) {  
                            
             //ako igrac nema moci, skuplja je, ako postoji na platformi
             if ( state == State.REGULAR || state == State.ANGRY ) {
               
-              platform.visited = true;
               
               //slucajevi ovisno postoji li i koja supermoc na platformi
               switch( platform.get_power() ){
                 case "" :
                   break;
-               case "federi" :
-                 this.t_start = millis();
-                 this.state = State.SPRINGS;
-                 this.gravity = 1.25;
-                 break;
-               case "stit" :
-                 this.t_start = millis();
-                 this.state = State.SHIELD;
-                 break;
-               case "propela" :
-                 this.t_start = millis();
-                 this.state = State.PROPELLER;
-                 this.gravity = 0;
-                 this.y_velocity = -48;
-                 break;
+                case "federi" :
+                  this.t_start = millis();
+                  this.state = State.SPRINGS;
+                  this.gravity = 1.25;
+                  break;
+                case "stit" :
+                  this.t_start = millis();
+                  this.state = State.SHIELD;
+                  break;
+                case "propela" :
+                  this.t_start = millis();
+                  this.state = State.PROPELLER;
+                  this.gravity = 0;
+                  this.y_velocity = -48;
+                  break;
+              }
             }
-          }
            
            //ako se Moodler sudari s platformom dok je u padu, odskače od nje
            if ( y_velocity >= 0 ) {
@@ -190,9 +189,13 @@ class Player {
              if ( platform instanceof Disappearing_Platform )
                platform.destroy();
               
+             if ( platform instanceof Bouncy_Platform)
+               this.y_velocity = -72;
+             else
+               this.y_velocity = -48;
              this.y = platform.y_pos-50;
-             this.y_velocity = -48;
             
+            platform.visited = true;
            }
         }
       }

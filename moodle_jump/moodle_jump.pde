@@ -318,13 +318,15 @@ void add_remove_platforms() {
   
   //vjerojatnost da platforma bude obicna
   //vjerojatnost je obrnuto proporcionalna score-u
+  /*
   float P_obicna = (p.score/3000 < 1) ? (1 - (Float.valueOf(p.score)/3000)): 0;
   //System.out.println(P_obicna);
   
+  float P_odskocna = (p.score/4000 < 1) ? (1 - (Float.valueOf(p.score)/4000)): 0;
   //vjerojatnost da platforma bude pomicna
   //vjerojatnost da platforma bude nestajuća je tada (1 - P_obicna - P_pomicna)
-  float P_pomicna = (p.score/6000 < 1) ? (P_obicna - (Float.valueOf(p.score)/6000)) : 0;
-  
+  float P_pomicna = (p.score/6000 < 1) ? (P_obicna - P_odskocna - (Float.valueOf(p.score)/6000)) : 0;
+  */
   //prvo crtamo platforme koje se slamaju
   //njihov broj je konstantan = 3
   while(broken_platforms.size() < 3){
@@ -365,15 +367,18 @@ void add_remove_platforms() {
       superpower = "federi";
     }
      
-    if (rnd <= P_obicna){
+    if (rnd <= 0.75){
       new_platform = new Regular_Platform(random(425), last.get_y() - razmak, superpower);
     }
-    else if (rnd <= P_obicna + P_pomicna){
+    else if (rnd >= 0.75 && rnd <= 0.80){
       new_platform = new Moving_Platform(random(425), last.get_y() - razmak, superpower);
     } 
-    else {
+    else if (rnd >= 0.80 && rnd <= 0.90){
       new_platform = new Disappearing_Platform(random(425), last.get_y() - razmak, superpower);
     }  
+    else{
+      new_platform = new Bouncy_Platform(random(425), last.get_y() - razmak, superpower);
+    }
     
     platforms.add(new_platform);
     last = new_platform;

@@ -42,11 +42,11 @@ class Bullet {
   
   public void display() {
     
-      //ovdje koristimo pushMatrix i popMatrix jer želimo samo micati samo metke,a ostale stvari se ne miču
+      //ovdje koristimo pushMatrix i popMatrix jer želimo micati samo metke,a ostale stvari se ne miču
       pushMatrix();
       translate( x_pos + bullet_img.width / 2, y_pos + bullet_img.height / 2 );
       if ( direction == Direction.RIGHT ){
-        rotate(radians( 90) + angle );
+        rotate(radians(90) + angle );
       }
       else {
         rotate( -( radians(90) - angle ) );
