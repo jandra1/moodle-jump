@@ -8,6 +8,7 @@ final int MAIN_MENU = 0;
 final int GAME = 1;
 final int HIGHSCORES = 2;
 final int GAME_OVER = 3;
+final int DIFFICULTY = 4;
 
 //glazba
 SoundFile Gauda, Rainbows, Gameover, Fall;
@@ -103,25 +104,30 @@ void draw() {
       text("   oodle Jump", width/2, 175);
       textSize(25);
       fill(255, 100, 0);
-      text("A or LEFT for left,  D or RIGHT for right", width/2, 250);
-      text("LCLICK for shoot", width/2, 300);
+      text("'A' or LEFT for left,  'D' or RIGHT for right", width/2, 250);
+      text("LCLICK to shoot", width/2, 300);
       fill(27);
-      rect(125,350,250,100);
-      rect(125,550,250,100);
+      rect(125,330,250,100);
+      rect(125,460,250,100);
+      rect(125,590,250,100);
       fill(255);
       textSize(35);
-      text("START",width/2, 415);
-      text("HIGHSCORES",width/2, 615);
+      text("START",width/2, 390);
+      text("DIFFICULTY",width/2, 520);
+      text("HIGHSCORES",width/2, 650);
       image(moodlers.get(0), 20, 111, 80, 80);
-      image(loadImage("dz.png"), 220, 470, 60, 60);
+      
     
-      if(mouseX > 125 && mouseX < 125+250 && mouseY > 350 && mouseY < 350+100 && mousePressed){
+      if(mouseX > 125 && mouseX < 125+250 && mouseY > 330 && mouseY < 330+100 && mousePressed){
         state=1;
         Rainbows.stop();
         Gauda.jump(2.5);
       }
-      if(mouseX > 125 && mouseX < 125+250 && mouseY > 550 && mouseY < 550+100 && mousePressed)
+      if(mouseX > 125 && mouseX < 125+250 && mouseY > 590 && mouseY < 590+100 && mousePressed)
         state=2;
+        
+      if(mouseX > 125 && mouseX < 125+250 && mouseY > 460 && mouseY < 460+100 && mousePressed)
+        state=4;
        break;
        
     case HIGHSCORES:
@@ -189,7 +195,7 @@ void draw() {
       
       fill(0);
       text("Score: "+str(p.score), 100, 40);
-      text("Bullets left: "+str(p.numberOfBullets), 400, 40);
+      text("Bullets left: "+str(p.numberOfBullets), 370, 40);
       
       add_remove_platforms();
       if (p.y > 800+25){
@@ -272,7 +278,31 @@ void draw() {
         
         break;
           
-  }
+      case DIFFICULTY:
+        background(225);
+        draw_background();
+        textAlign(CENTER);
+        textSize(25);
+        fill(27);
+        rect(125,100,250,100);
+        rect(125,230,250,100);
+        rect(125,360,250,100);
+        fill(255);
+        textSize(35);
+        fill(255);
+        text("BACK",width/2, 160);
+        text("NORMAL",width/2, 290);
+        text("HARD",width/2, 420);
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 100 && mouseY < 100+100 && mousePressed){
+          state=1;
+        }
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 230 && mouseY < 230+100 && mousePressed)
+          state=2;
+        
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 360 && mouseY < 360+100 && mousePressed)
+          state=4;
+        break;
+    }
 }
 
 //metak se ispaljuje nakon klika mišem
@@ -340,7 +370,7 @@ void add_remove_platforms() {
     //hoce li i koja supermoc biti na toj platformi
     float rnd = random(0, 1);
 
-    if (rnd <= 0.01) {
+    if (rnd <= 0.008) {
       //System.out.println("propela");
       superpower = "propela";
     }
@@ -348,11 +378,11 @@ void add_remove_platforms() {
       //System.out.println("stit");
       superpower = "stit";
     }
-    else if (rnd >= 0.03 && rnd <= 0.07) {
+    else if (rnd >= 0.03 && rnd <= 0.05) {
       //System.out.println("federi");
       superpower = "federi";
     }
-    else if (rnd >= 0.5 && rnd <= 0.90) {
+    else if (rnd >= 0.07 && rnd <= 0.13) {
       //System.out.println("metak");
       superpower = "metak";
     }

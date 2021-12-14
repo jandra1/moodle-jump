@@ -160,7 +160,7 @@ class Player {
       for ( Platform platform : platforms ) {
         
         if ( ( y >= platform.get_y()-110 ) && ( y <= platform.get_y()-90 ) &&
-              ( x >= platform.get_x()-90 ) && ( x <= platform.get_x()+60))  {  
+              ( x >= platform.get_x()-90 ) && ( x <= platform.get_x()+60) )  {  
                            
             //ako igrac nema moci, skuplja je, ako postoji na platformi
             if ( state == State.REGULAR || state == State.ANGRY ) {
@@ -202,6 +202,7 @@ class Player {
                this.y_velocity = -72;
              else
                this.y_velocity = -48;
+               
              this.y = platform.y_pos-50;
             
             platform.visited = true;
