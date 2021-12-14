@@ -276,11 +276,13 @@ void draw() {
 void mousePressed() {  
   
   //klik na start ili ako je igrač mrtav ne smije ispucati metak
-  if (state != 1  || p.state == State.RIP){
+  //ako igrac nema preostalih metaka, ne radi nista
+  if (state != 1  || p.state == State.RIP || p.numberOfBullets == 0){
     return;
   }
   Bullet new_bullet = new Bullet(mouseX, mouseY);
   bullets.add(new_bullet);
+  --p.numberOfBullets;
   //Moodler je ljut kad puca
   if (p.state == State.REGULAR){
     p.state = State.ANGRY;
@@ -316,17 +318,6 @@ void add_remove_platforms() {
   //najvise ih je 16(na pocetku), a najmanje 6
   int broj_pl = (16 - p.score/250 > 5) ? (16 - p.score/250) : 6; 
   
-  //vjerojatnost da platforma bude obicna
-  //vjerojatnost je obrnuto proporcionalna score-u
-  /*
-  float P_obicna = (p.score/3000 < 1) ? (1 - (Float.valueOf(p.score)/3000)): 0;
-  //System.out.println(P_obicna);
-  
-  float P_odskocna = (p.score/4000 < 1) ? (1 - (Float.valueOf(p.score)/4000)): 0;
-  //vjerojatnost da platforma bude pomicna
-  //vjerojatnost da platforma bude nestajuća je tada (1 - P_obicna - P_pomicna)
-  float P_pomicna = (p.score/6000 < 1) ? (P_obicna - P_odskocna - (Float.valueOf(p.score)/6000)) : 0;
-  */
   //prvo crtamo platforme koje se slamaju
   //njihov broj je konstantan = 3
   while(broken_platforms.size() < 3){
@@ -338,14 +329,6 @@ void add_remove_platforms() {
   int razmak = 800/(broj_pl - 1);
   Platform new_platform;
   
-  //vjerojatnost da se supermoći nalaze na platformi
-  double P_federi = (double)5/400;
-  //System.out.println(P_federi);
-  double P_stit = (double)2/400;
-  //System.out.println(P_stit);
-  double P_propela = (double)1/400;
-  //System.out.println(P_propela);
-  
   while (platforms.size() < broj_pl) {
     
     String superpower = "";
@@ -354,28 +337,36 @@ void add_remove_platforms() {
     //hoce li i koja supermoc biti na toj platformi
     float rnd = random(0, 1);
 
-    if (rnd <= P_propela) {
+    if (rnd <= 0.01) {
       //System.out.println("propela");
       superpower = "propela";
     }
-    else if (rnd <= P_propela + P_stit) {
+    else if (rnd >= 0.01 && rnd <= 0.03) {
       //System.out.println("stit");
       superpower = "stit";
     }
-    else if (rnd <= P_propela + P_stit + P_federi) {
+    else if (rnd >= 0.03 && rnd <= 0.07) {
       //System.out.println("federi");
       superpower = "federi";
     }
+    else if (rnd >= 0.5 && rnd <= 0.90) {
+      //System.out.println("metak");
+      superpower = "metak";
+    }
      
+    //vjerojatnost da platforma bude regularna
     if (rnd <= 0.75){
       new_platform = new Regular_Platform(random(425), last.get_y() - razmak, superpower);
     }
+    //vjerojatnost da platforma bude pomicna
     else if (rnd >= 0.75 && rnd <= 0.80){
       new_platform = new Moving_Platform(random(425), last.get_y() - razmak, superpower);
     } 
-    else if (rnd >= 0.80 && rnd <= 0.90){
+    //vjerojatnost da platforma bude nestajuca
+    else if (rnd >= 0.80 && rnd <= 0.95){
       new_platform = new Disappearing_Platform(random(425), last.get_y() - razmak, superpower);
     }  
+    //vjerojatnost da platforma bude odskocna
     else{
       new_platform = new Bouncy_Platform(random(425), last.get_y() - razmak, superpower);
     }
@@ -411,6 +402,7 @@ void reset(){
   p.gravity = 2;
   p.state = State.REGULAR;
   p.orientation = Orientation.RIGHT;
+  p.numberOfBullets = 10;
   
   first_horiz_line.value = 0;
   

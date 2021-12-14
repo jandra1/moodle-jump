@@ -15,6 +15,7 @@ enum State {
 class Player {
     private float x, y, x_velocity, y_velocity, gravity, size;
     private float climb;
+    public int numberOfBullets;
     public int score;
     //duljina trajanja supermoci u milisekundama
     //sve supermoci traju jednako(6s), osim propelera(3s)
@@ -38,6 +39,7 @@ class Player {
       this.sp_duration = 6000;
       this.propeller_duration = 3000;
       this.t_start = -1;
+      this.numberOfBullets = 10;
       
     }
     
@@ -46,6 +48,10 @@ class Player {
     }
     public float get_y() {
       return y;
+    }
+    
+    public int get_numberOfBullets(){
+      return numberOfBullets;
     }
   
     public void update( ArrayList<Platform> platforms, ArrayList<Broken_Platform> broken_platforms, MyFloat first_horiz_line ) {
@@ -153,8 +159,8 @@ class Player {
       //prvo provjeravamo platforme koje se ne lome
       for ( Platform platform : platforms ) {
         
-        if (( ( y >= platform.get_y()-110 ) && ( y <= platform.get_y()-90 ) &&
-              ( x >= platform.get_x()-200 ) && ( x <= platform.get_x()+60))) {  
+        if ( ( y >= platform.get_y()-110 ) && ( y <= platform.get_y()-90 ) &&
+              ( x >= platform.get_x()-90 ) && ( x <= platform.get_x()+60))  {  
                            
             //ako igrac nema moci, skuplja je, ako postoji na platformi
             if ( state == State.REGULAR || state == State.ANGRY ) {
@@ -179,6 +185,9 @@ class Player {
                   this.gravity = 0;
                   this.y_velocity = -48;
                   break;
+                case "metak" :
+                  this.numberOfBullets = 10;
+                  
               }
             }
            

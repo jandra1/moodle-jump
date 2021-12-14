@@ -21,7 +21,12 @@ abstract class Platform {
     if ( superpower.equals( "" ) == false ){
       String stringImage = superpower + ".png";
       power = loadImage( stringImage );
-      power.resize( (int)( power.width/2.25 ), (int)( power.height/2.25 ) );
+      if (stringImage.equals( "metak.png" )){
+        power.resize( (int)( power.width/3.25 ), (int)( power.height/3.25 ) );
+      }
+      else{
+        power.resize( (int)( power.width/2.25 ), (int)( power.height/2.25 ) );
+      }
     }
     
   }
