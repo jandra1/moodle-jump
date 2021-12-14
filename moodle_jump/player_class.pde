@@ -185,11 +185,11 @@ class Player {
                   this.gravity = 0;
                   this.y_velocity = -48;
                   break;
-                case "metak" :
-                  this.numberOfBullets = 10;
                   
               }
             }
+            if(platform.get_power() == "metak")
+               this.numberOfBullets = 10;
            
            //ako se Moodler sudari s platformom dok je u padu, odskače od nje
            if ( y_velocity >= 0 ) {

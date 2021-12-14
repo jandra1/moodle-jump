@@ -186,7 +186,10 @@ void draw() {
       p.display();  
       
       remove_bullets();
+      
+      fill(0);
       text("Score: "+str(p.score), 100, 40);
+      text("Bullets left: "+str(p.numberOfBullets), 400, 40);
       
       add_remove_platforms();
       if (p.y > 800+25){
