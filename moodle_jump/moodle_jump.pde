@@ -21,6 +21,11 @@ String audioName4 = "Moodle_Fall.mp3";
 int GOTime;
 int GOFall;
 
+//vjerojatnosti pojavljivanja platformi
+float P_regularna = 0.75;
+float P_pomicna = 0.85;
+float P_nestajuca = 0.95;
+
 homework HW;
 IntList highscores;
 Player p;
@@ -282,25 +287,37 @@ void draw() {
         background(225);
         draw_background();
         textAlign(CENTER);
+        textSize(70);
+        fill(27);
+        text("   oodle Jump", width/2, 175);
         textSize(25);
         fill(27);
-        rect(125,100,250,100);
+        rect(125,660,250,100);
         rect(125,230,250,100);
         rect(125,360,250,100);
         fill(255);
         textSize(35);
         fill(255);
-        text("BACK",width/2, 160);
+        text("BACK",width/2, 720);
         text("NORMAL",width/2, 290);
         text("HARD",width/2, 420);
-        if(mouseX > 125 && mouseX < 125+250 && mouseY > 100 && mouseY < 100+100 && mousePressed){
-          state=1;
+        image(moodlers.get(0), 20, 111, 80, 80);
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 660 && mouseY < 660+100 && mousePressed){
+          state = MAIN_MENU;
         }
-        if(mouseX > 125 && mouseX < 125+250 && mouseY > 230 && mouseY < 230+100 && mousePressed)
-          state=2;
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 230 && mouseY < 230+100 && mousePressed){
+          P_regularna = 0.75;
+          P_pomicna = 0.85;
+          P_nestajuca = 0.95;
+          state = GAME;
+        }
         
-        if(mouseX > 125 && mouseX < 125+250 && mouseY > 360 && mouseY < 360+100 && mousePressed)
-          state=4;
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 360 && mouseY < 360+100 && mousePressed){
+          P_regularna = 0.50;
+          P_pomicna = 0.70;
+          P_nestajuca = 0.98;
+          state = GAME;
+        }
         break;
     }
 }
@@ -388,15 +405,15 @@ void add_remove_platforms() {
     }
      
     //vjerojatnost da platforma bude regularna
-    if (rnd <= 0.75){
+    if (rnd <= P_regularna){
       new_platform = new Regular_Platform(random(425), last.get_y() - razmak, superpower);
     }
     //vjerojatnost da platforma bude pomicna
-    else if (rnd >= 0.75 && rnd <= 0.80){
+    else if (rnd >= P_regularna && rnd <= P_pomicna){
       new_platform = new Moving_Platform(random(425), last.get_y() - razmak, superpower);
     } 
     //vjerojatnost da platforma bude nestajuca
-    else if (rnd >= 0.80 && rnd <= 0.95){
+    else if (rnd >= P_pomicna && rnd <= P_nestajuca){
       new_platform = new Disappearing_Platform(random(425), last.get_y() - razmak, superpower);
     }  
     //vjerojatnost da platforma bude odskocna
