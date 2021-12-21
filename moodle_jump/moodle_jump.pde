@@ -130,15 +130,15 @@ void draw() {
       
     
       if(mouseX > 125 && mouseX < 125+250 && mouseY > 330 && mouseY < 330+100 && mousePressed){
-        state=1;
+        state=GAME;
         Rainbows.stop();
         Gauda.jump(2.5);
       }
       if(mouseX > 125 && mouseX < 125+250 && mouseY > 590 && mouseY < 590+100 && mousePressed)
-        state=2;
+        state=HIGHSCORES;
         
       if(mouseX > 125 && mouseX < 125+250 && mouseY > 460 && mouseY < 460+100 && mousePressed)
-        state=4;
+        state=DIFFICULTY;
        break;
        
     case HIGHSCORES:
@@ -159,7 +159,7 @@ void draw() {
           text((i+1)+".    "+str(highscores.get(i)), 50, 200+(i+1)*100);
         }
         if(mouseX > 125 && mouseX < 125+250 && mouseY > 75 && mouseY < 75+100 && mousePressed)
-          state=0;
+          state=MAIN_MENU;
         
         break;
         
@@ -216,7 +216,7 @@ void draw() {
           highscores.add(5,score);
           highscores.sortReverse();  
         }
-        state=3;
+        state=GAME_OVER;
         Gauda.stop();       
         
         if(GOFall==0)
@@ -258,13 +258,13 @@ void draw() {
         fill(255);
         text("RESTART", width/2, 565);
         if(mouseX > 125 && mouseX < 125+250 && mouseY > 650 && mouseY < 650+100 && mousePressed){
-          state=0; 
+          state=MAIN_MENU; 
           Gauda.stop();
           Gameover.stop();
           Rainbows.loop();
         }
         if(mouseX > 125 && mouseX < 125+250 && mouseY > 500 && mouseY < 500+100 && mousePressed){
-          state=1;
+          state=GAME;
           Gameover.stop();
           Gauda.jump(2.5);
         }
