@@ -26,6 +26,12 @@ float P_regularna = 0.75;
 float P_pomicna = 0.85;
 float P_nestajuca = 0.95;
 
+//vjerojatnosti pojavljivanja supermoći
+float P_stit1 = 0.01;
+float P_stit2 = 0.03;
+float P_federi = 0.05;
+float P_metak = 0.10;
+
 homework HW;
 IntList highscores;
 Player p;
@@ -306,16 +312,32 @@ void draw() {
           state = MAIN_MENU;
         }
         if(mouseX > 125 && mouseX < 125+250 && mouseY > 230 && mouseY < 230+100 && mousePressed){
+          
           P_regularna = 0.75;
           P_pomicna = 0.85;
           P_nestajuca = 0.95;
+          
+          P_stit1 = 0.01;
+          P_stit2 = 0.03;
+          P_federi = 0.05;
+          P_metak = 0.10;
+          
+          Rainbows.stop();
           state = GAME;
         }
         
         if(mouseX > 125 && mouseX < 125+250 && mouseY > 360 && mouseY < 360+100 && mousePressed){
+          
           P_regularna = 0.50;
           P_pomicna = 0.70;
           P_nestajuca = 0.98;
+          
+          P_stit1 = 0.005;
+          P_stit2 = 0.015;
+          P_federi = 0.025;
+          P_metak = 0.1;
+          
+          Rainbows.stop();
           state = GAME;
         }
         break;
@@ -391,15 +413,15 @@ void add_remove_platforms() {
       //System.out.println("propela");
       superpower = "propela";
     }
-    else if (rnd >= 0.01 && rnd <= 0.03) {
+    else if (rnd >= P_stit1 && rnd <= P_stit2) {
       //System.out.println("stit");
       superpower = "stit";
     }
-    else if (rnd >= 0.03 && rnd <= 0.05) {
+    else if (rnd >= P_stit2 && rnd <= P_federi) {
       //System.out.println("federi");
       superpower = "federi";
     }
-    else if (rnd >= 0.07 && rnd <= 0.13) {
+    else if (rnd >= P_federi && rnd <= P_metak) {
       //System.out.println("metak");
       superpower = "metak";
     }
