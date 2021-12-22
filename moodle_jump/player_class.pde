@@ -225,8 +225,11 @@ class Player {
         {
           
           state = State.RIP;
-          Gauda.stop();
-          Fall.play();
+          if(audio == 1){
+            Gauda.stop();
+            Fall.play();
+          }
+          
           GOFall=1;
         }
       }

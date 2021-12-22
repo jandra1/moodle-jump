@@ -8,7 +8,9 @@ final int MAIN_MENU = 0;
 final int GAME = 1;
 final int HIGHSCORES = 2;
 final int GAME_OVER = 3;
-final int DIFFICULTY = 4;
+final int OPTIONS = 4;
+final int PAUSE = 5;
+final int DIFFICULTY = 6;
 
 //glazba
 SoundFile Gauda, Rainbows, Gameover, Fall;
@@ -16,6 +18,7 @@ String audioName1 = "Rainbows.mp3";
 String audioName2 = "Gauda.mp3";
 String audioName3 = "MoodleJump_gameover.mp3";
 String audioName4 = "Moodle_Fall.mp3";
+int audio = 1;
 
 //neke varijable koje su mi trebale za gameover screen(MK)
 int GOTime;
@@ -81,6 +84,7 @@ void setup() {
   bullet_img = loadImage("metak.png");
   bullet_img.resize(bullet_img.width / 6, bullet_img.height / 6);
   
+  textFont(loadFont("BerlinSansFB-Reg-48.vlw"));
 }
 
 void draw_background() {
@@ -112,61 +116,113 @@ void draw() {
       textAlign(CENTER);
       textSize(70);
       fill(27);
-      text("   oodle Jump", width/2, 175);
-      textSize(25);
+      text("         Jump", 305, 175);
+      textSize(10);
       fill(255, 100, 0);
-      text("'A' or LEFT for left,  'D' or RIGHT for right", width/2, 250);
-      text("LCLICK to shoot", width/2, 300);
       fill(27);
-      rect(125,330,250,100);
-      rect(125,460,250,100);
-      rect(125,590,250,100);
+      rect(300, 350, 125, 50);
+      rect(300, 450, 125, 50);
+      rect(300, 550, 125, 50);
+      rect(300, 650, 125, 50);
       fill(255);
-      textSize(35);
-      text("START",width/2, 390);
-      text("DIFFICULTY",width/2, 520);
-      text("HIGHSCORES",width/2, 650);
-      image(moodlers.get(0), 20, 111, 80, 80);
+      textSize(15);
+      text("DIFFICULTY", 362.5, 380);
+      text("START", 362.5, 480);
+      text("HIGHSCORES",362.5, 580);
+      text("OPTIONS",362.5, 680);
+      image(loadImage("moodle.png"), 50, 80, 250, 120);
       
+      p.update(platforms, broken_platforms, first_horiz_line);
+      p.display();  
+      
+      if(mouseX > 300 && mouseX < 300+125 && mouseY > 350 && mouseY < 350+50 && mousePressed)
+        state=DIFFICULTY;
     
-      if(mouseX > 125 && mouseX < 125+250 && mouseY > 330 && mouseY < 330+100 && mousePressed){
+      if(mouseX > 300 && mouseX < 300+125 && mouseY > 450 && mouseY < 450+50 && mousePressed || (keyPressed && key == ENTER)){
         state=GAME;
         Rainbows.stop();
         Gauda.jump(2.5);
       }
-      if(mouseX > 125 && mouseX < 125+250 && mouseY > 590 && mouseY < 590+100 && mousePressed)
+      if(mouseX > 300 && mouseX < 300+125 && mouseY > 550 && mouseY < 550+50 && mousePressed)
         state=HIGHSCORES;
         
-      if(mouseX > 125 && mouseX < 125+250 && mouseY > 460 && mouseY < 460+100 && mousePressed)
-        state=DIFFICULTY;
-       break;
+      if(mouseX > 300 && mouseX < 300+125 && mouseY > 650 && mouseY < 650+50 && mousePressed)
+        state=OPTIONS;
+        
+      break;
        
     case HIGHSCORES:
     
-        background(225);
-        draw_background();
-        fill(27);
-        rect(125,75,250,100);
-        textSize(40);
-        fill(255);
-        textAlign(CENTER);
-        text("BACK", width/2, 140);
-        textSize(40);
-        fill(27);
-        fill(0, 0, 255);
-        for(int i = 0; i < 5; i++){
-          textAlign(LEFT);
-          text((i+1)+".    "+str(highscores.get(i)), 50, 200+(i+1)*100);
-        }
-        if(mouseX > 125 && mouseX < 125+250 && mouseY > 75 && mouseY < 75+100 && mousePressed)
-          state=MAIN_MENU;
+      background(225);
+      draw_background();
+      fill(27);
+      rect(width/2-62.5, 700, 125, 50);
+      textSize(15);
+      fill(255);
+      textAlign(CENTER);
+      text("BACK", width/2, 730);
+      textSize(40);
+      fill(0);
+      //fill(0, 0, 255);
+      for(int i = 0; i < 5; i++){
+        textAlign(LEFT);
+        text((i+1)+".    "+str(highscores.get(i)), width/2-50, 75+(i+1)*100);
+      }
+      if(mouseX > width/2-62.5 && mouseX < width/2+62.5 && mouseY > 700 && mouseY < 700+50 && mousePressed)
+        state=0;
+      
+      break;
         
-        break;
+    case OPTIONS:
+     
+      background(225);
+      draw_background();
+      textAlign(CENTER);
+      textSize(70);
+      fill(27);
+      image(loadImage("moodle.png"), 50, 80, 250, 120);
+      text("         Jump", 305, 175);
+      textSize(25);
+      fill(255, 100, 0);
+      text("A or LEFT for left", width/2, 300);
+      text("D or RIGHT for right", width/2, 325);      
+      text("LCLICK for shoot", width/2, 350);        
+      fill(27);         
+      
+      rect(width/2-62.5, 700, 125, 50);
+      fill(255);
+      textAlign(CENTER);
+      textSize(15);
+      text("BACK", width/2, 730);
+      
+      if(mouseX > width/2-62.5 && mouseX < width/2+62.5 && mouseY > 700 && mouseY < 700+50 && mousePressed)
+          state=0;      
+          
+      textSize(25);
+      fill(0);
+      text("SOUND",  width/2, 500);
+      rect(width/2-32, 505, 25, 18);
+      rect(width/2, 505, 30, 18);
+      fill(255);
+      textSize(10);
+      text("ON        OFF", width/2, 518);
+      if(mouseX > width/2-32 && mouseX < width/2-7 && mouseY > 505 && mouseY < 505+18 && mousePressed){
+        if(audio==0){
+          audio=1;
+          Rainbows.loop();
+        }
+      }
+      if(mouseX > width/2 && mouseX < width/2+30 && mouseY > 505 && mouseY < 505+18 && mousePressed){
+        audio=0;
+        Rainbows.stop();
+      }
+      
+      break;    
         
         
     case GAME:
     
-      if(Gauda.isPlaying() == false && p.state != State.RIP)
+      if(audio == 1 && Gauda.isPlaying() == false && p.state != State.RIP)
         Gauda.jump(2.5);
       frameRate(40);
       background(225);
@@ -204,9 +260,11 @@ void draw() {
       
       remove_bullets();
       
+      textSize(20);
       fill(0);
       text("Score: "+str(p.score), 100, 40);
-      text("Bullets left: "+str(p.numberOfBullets), 370, 40);
+      text("Bullets left: "+str(p.numberOfBullets), 270, 40);
+      text("||", width-20, 30);
       
       add_remove_platforms();
       if (p.y > 800+25){
@@ -222,57 +280,103 @@ void draw() {
         if(GOFall==0)
         {
           GOFall=1;
-          Fall.play();
+          if( audio == 1 )
+             Fall.play();
         }      
         reset();
       }
       break;
       
+      
+      case PAUSE:       
+        fill(27);
+        rect(125,650,250,100);
+        textSize(40);
+        fill(255);
+        text("BACK", width/2, 715);        
+        
+        fill(27);
+        rect(125,500,250,100);
+        textSize(40);
+        fill(255);
+        text("RESUME", width/2, 565);
+        
+                
+        if(mouseX > 125 && mouseX < 125+250 && mouseY > 650 && mouseY < 650+100 && mousePressed){
+          state=MAIN_MENU; 
+          reset();
+          
+          Gauda.stop();
+          Gameover.stop();
+          if(audio==1)
+              Rainbows.loop();          
+        }
+        if((mouseX > 125 && mouseX < 125+250 && mouseY > 500 && mouseY < 500+100 && mousePressed))          
+          state=GAME;
+        
+        break;
+      
       case GAME_OVER:       
         background(225);
         draw_background();
-        textSize(60);
-        fill(255,0,0);
-        text("GAME OVER :(", width/2, 150);
-        if(score > highscores.get(1)){
         textSize(50);
-        fill(255,100,0);
-        text("NEW RECORD!", width/2,300);
+        fill(255,0,0);
+        text("GAME OVER", width/2, 150);
+        if(score > highscores.get(1)){
+          textSize(30);
+          fill(0);
+          text("NEW RECORD!", width/2,250);
         }
         else {
-        textSize(45);
-        fill(255,100,0);
-        text("SCORE", width/2, 300);
+          textSize(30);
+          fill(0);
+          text("YOUR SCORE", width/2, 250);
         }
-        textSize(80);
-        fill(255,100,0);
-        text(score, width/2, 425);
+        textSize(50);
+        fill(0);
+        text(score, width/2, 300);
+        if(score < highscores.get(0)){
+          textSize(30);
+          fill(0);
+          text("YOUR HIGHSCORE", width/2, 350);
+          textSize(50);
+          fill(0);
+          text(highscores.get(0), width/2, 400);
+        }
+        
         fill(27);
         rect(125,650,250,100);
         textSize(40);
         fill(255);
         text("BACK", width/2, 715);
+        
+        
         fill(27);
         rect(125,500,250,100);
         textSize(40);
         fill(255);
         text("RESTART", width/2, 565);
+        
         if(mouseX > 125 && mouseX < 125+250 && mouseY > 650 && mouseY < 650+100 && mousePressed){
-          state=MAIN_MENU; 
+          state=0; 
           Gauda.stop();
           Gameover.stop();
-          Rainbows.loop();
+          if(audio==1)
+              Rainbows.loop();
         }
-        if(mouseX > 125 && mouseX < 125+250 && mouseY > 500 && mouseY < 500+100 && mousePressed){
-          state=GAME;
-          Gameover.stop();
-          Gauda.jump(2.5);
+        if((mouseX > 125 && mouseX < 125+250 && mouseY > 500 && mouseY < 500+100 && mousePressed) || (keyPressed && key == ENTER)){
+          state=1;
+          if(audio==1){            
+            Gameover.stop();
+            Gauda.jump(2.5);
+          }
         }
         
         if(GOFall==0)
         {
           GOFall=1;
-          Fall.play();
+          if(audio==1)
+            Fall.play();
           GOTime-=0.8*frameRate;
         }
         
@@ -283,7 +387,8 @@ void draw() {
           if(GOTime>0.8*frameRate)
           {
             GOFall=2;
-            Gameover.play();
+            if(audio==1)
+              Gameover.play();
           }
         }
         
@@ -352,6 +457,12 @@ void mousePressed() {
   if (state != 1  || p.state == State.RIP || p.numberOfBullets == 0){
     return;
   }
+  
+  if(mouseX > width-40 && mouseX < width && mouseY > 0 && mouseY < 30+10){
+     if(state != PAUSE)
+       state = PAUSE;
+  }
+  
   Bullet new_bullet = new Bullet(mouseX, mouseY);
   bullets.add(new_bullet);
   --p.numberOfBullets;
@@ -359,6 +470,17 @@ void mousePressed() {
   if (p.state == State.REGULAR){
     p.state = State.ANGRY;
   }  
+}
+
+void keyPressed(){
+  
+  if (state != GAME  || p.state == State.RIP){
+    return;
+  }
+  if(key == 'p'){
+     if(state != PAUSE)
+       state = PAUSE;
+  }
 }
 
 void remove_bullets(){
